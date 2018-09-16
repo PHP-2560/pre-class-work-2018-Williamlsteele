@@ -5,7 +5,6 @@ This folder will be where you complete your pre-class each week. The first time 
 
 Before you continue, Edit this document with:
 
-
 - Preferred Name: William Steele
 - Brown Name: William Steele
 - Brown E-mail: William_Steele@Brown.edu
