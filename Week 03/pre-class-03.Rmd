@@ -12,7 +12,10 @@ Use dplyr functions to address the following questions:
 
 How many unique countries are represented per continent?
 ``` {r}
-
+#grouping data by continent, then distinctly counting how many countries are in each continent group
+gapminder %>%
+  group_by(continent) %>%
+  summarise(unique_countries = n_distinct(country))
 ```
 Which European nation had the lowest GDP per capita in 1997?
 According to the data available, what was the average life expectancy across each continent in the 1980s?
