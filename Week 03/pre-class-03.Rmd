@@ -18,7 +18,24 @@ gapminder %>%
   summarise(unique_countries = n_distinct(country))
 ```
 Which European nation had the lowest GDP per capita in 1997?
+``` {r}
+gapminder %>%
+  filter(continent == "Europe", year == 1997) %>%
+  arrange(gdpPercap) %>%
+  select(country) %>%
+  nth(1)
+  
+```
 According to the data available, what was the average life expectancy across each continent in the 1980s?
+``` {r}
+gapminder %>%
+  group_by(continent) %>%
+  filter(year >= 1980 & year <=1989) %>%
+  summarise(avg_life_expect_1980s = mean(lifeExp, na.rm = T))
+
+
+```
+
 What 5 countries have the highest total GDP over all years combined?
 What countries and years had life expectancies of at least 80 years? N.b. only output the columns of interest: country, life expectancy and year (in that order).
 What 10 countries have the strongest correlation (in either direction) between life expectancy and per capita GDP?
