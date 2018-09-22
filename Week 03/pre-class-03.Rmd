@@ -46,7 +46,6 @@ gapminder %>%
 What countries and years had life expectancies of at least 80 years? N.b. only output the columns of interest: country, life expectancy and year (in that order).
 ``` {r}
 gapminder %>%
-  group_by(country) %>% #grouping by country
   filter(lifeExp >= 80) %>% #filtering out countries that dont have life expectancy over 80
   select(country, lifeExp, year) #grabbing columns of interest
 
@@ -56,22 +55,27 @@ What 10 countries have the strongest correlation (in either direction) between l
 ``` {r}
 gapminder %>%
   group_by(country) %>%
-  mutate(corr = abs(cor(lifeExp, gdpPercap))) %>%
-  select(country, corr) %>%
-  distinct(corr) %>%
+  summarise(corr = abs(cor(lifeExp, gdpPercap))) %>%
   arrange(desc(corr)) %>%
   slice(1:10)
 
 ```
 Which combinations of continent (besides Asia) and year have the highest average population across all countries? N.b. your output should include all results sorted by highest average population. With what you already know, this one may stump you. See this Q&A for how to ungroup before arrangeing. This also behaves differently in more recent versions of dplyr.
 ``` {r}
-
+gapminder %>%
+  filter(continent != "Asia") %>%
+  group_by(continent, year) %>%
+  summarise(avg_pop = mean(pop)) %>%
+  arrange(desc(avg_pop))
 ```
 
 Which three countries have had the most consistent population estimates (i.e. lowest standard deviation) across the years of available data?
 ``` {r}
 gapminder %>%
-  group_by(country)
+  group_by(country) %>%
+  summarise(s.dev = sd(pop)) %>%
+  arrange(s.dev) %>%
+  slice(1:3)
 
 ```
 Subset gm to only include observations from 1992 and store the results as gm1992. What kind of object is this?
