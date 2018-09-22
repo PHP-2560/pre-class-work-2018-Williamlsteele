@@ -83,11 +83,17 @@ Subset gm to only include observations from 1992 and store the results as gm1992
 gm1992 = gm %>%
   filter(year == 1992)
 typeof(gm1992)
+class(gm1992)
 
 ```
 Which observations indicate that the population of a country has decreased from the previous year and the life expectancy has increased from the previous year? See the vignette on window functions.
 ``` {r}
+gm %>%
+  group_by(country) %>%
+  mutate(pop_diff = pop - lag(pop), lifeExp_diff = lifeExp - lag(lifeExp)) %>%
+  filter(pop_diff < 0 & lifeExp_diff > 0) %>%
+  select(-pop_diff, -lifeExp_diff)
 
-
+  
 ```
 
