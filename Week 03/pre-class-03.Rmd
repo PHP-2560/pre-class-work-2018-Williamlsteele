@@ -93,7 +93,5 @@ gm %>%
   mutate(pop_diff = pop - lag(pop), lifeExp_diff = lifeExp - lag(lifeExp)) %>%
   filter(pop_diff < 0 & lifeExp_diff > 0) %>%
   select(-pop_diff, -lifeExp_diff)
-
-  
 ```
 
