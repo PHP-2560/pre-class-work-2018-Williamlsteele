@@ -2,9 +2,9 @@ Week 03 Pre-Class Problems
 
 We will work with the dataset called gapminder, this is a cleaned up version from Gapminder Data. Gapminder contains a lot of great data on all of the nations of the world. We first need to install the gapminder package in R.
 ``` {r}
-install.packages("gapminder")
-library(dplyr)
-library(gapminder)
+#install.packages("gapminder")
+#library(dplyr)
+#library(gapminder)
 gm = gapminder
 ```
 Pre-Class Problems
@@ -19,6 +19,7 @@ gm %>%
 ```
 Which European nation had the lowest GDP per capita in 1997?
 ``` {r}
+#filter just continents from Europe in the year 1997, arrange by gdpPercap, then select the top row that indicates the country with the lowest value
 gm %>%
   filter(continent == "Europe", year == 1997) %>%
   arrange(gdpPercap) %>%
@@ -27,6 +28,7 @@ gm %>%
 ```
 According to the data available, what was the average life expectancy across each continent in the 1980s?
 ``` {r}
+#group data by continents, filter just years in the 1980s, then summarise each group based on their mean life expectancy
 gm %>%
   group_by(continent) %>%
   filter(year >= 1980 & year <=1989) %>%
@@ -36,7 +38,7 @@ gm %>%
 What 5 countries have the highest total GDP over all years combined?
 ``` {r}
 gm %>%
-  mutate(gdp_year_total = gdpPercap*pop) %>%
+  mutate(gdp_year_total = gdpPercap*pop) %>% 
   group_by(country) %>%
   summarise(gdp_grand_total = sum(gdp_year_total)) %>%
   arrange(desc(gdp_grand_total)) %>%
@@ -45,20 +47,19 @@ gm %>%
 ```
 What countries and years had life expectancies of at least 80 years? N.b. only output the columns of interest: country, life expectancy and year (in that order).
 ``` {r}
+#filter rows where lifeExp is greater than 80, then selecting the country, life expectancy and year columns
 gm %>%
-  filter(lifeExp >= 80) %>% #filtering out countries that dont have life expectancy over 80
-  select(country, lifeExp, year) #grabbing columns of interest
-
+  filter(lifeExp >= 80) %>% 
+  select(country, lifeExp, year) 
 ```
 
 What 10 countries have the strongest correlation (in either direction) between life expectancy and per capita GDP?
 ``` {r}
 gm %>%
-  group_by(country) %>%
-  summarise(corr = abs(cor(lifeExp, gdpPercap))) %>%
+  group_by(country) %>% 
+  summarise(corr = abs(cor(lifeExp, gdpPercap))) %>%  
   arrange(desc(corr)) %>%
   slice(1:10)
-
 ```
 Which combinations of continent (besides Asia) and year have the highest average population across all countries? N.b. your output should include all results sorted by highest average population. With what you already know, this one may stump you. See this Q&A for how to ungroup before arrangeing. This also behaves differently in more recent versions of dplyr.
 ``` {r}
@@ -76,15 +77,14 @@ gm %>%
   summarise(s.dev = sd(pop)) %>%
   arrange(s.dev) %>%
   slice(1:3)
-
 ```
 Subset gm to only include observations from 1992 and store the results as gm1992. What kind of object is this?
 ``` {r}
+
 gm1992 = gm %>%
   filter(year == 1992)
 typeof(gm1992)
 class(gm1992)
-
 ```
 Which observations indicate that the population of a country has decreased from the previous year and the life expectancy has increased from the previous year? See the vignette on window functions.
 ``` {r}
