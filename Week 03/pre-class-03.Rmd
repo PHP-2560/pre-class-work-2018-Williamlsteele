@@ -92,11 +92,13 @@ class(gm1992)
 ```
 Which observations indicate that the population of a country has decreased from the previous year and the life expectancy has increased from the previous year? See the vignette on window functions.
 ``` {r}
+#creating two new variables that calculate the difference between the most recent population/lifeexpectancy and the one "lagging" one observation before it. Then I filtered observations where the population descreased and the life expectancy increased. I finally returned the original dataset where the two new variables are not shown
+```
 gm %>%
   group_by(country) %>%
-  mutate(pop_diff = pop - lag(pop), lifeExp_diff = lifeExp - lag(lifeExp)) %>% #creating two new variables that calculate the difference between the most recent population/lifeexpectancy and the one "lagging" one observation before it
-  filter(pop_diff < 0 & lifeExp_diff > 0) %>% #filtering observations where the population descreased and the life expectancy increased
-  select(-pop_diff, -lifeExp_diff) #returning the original dataset where the two new variables are not shown
+  mutate(pop_diff = pop - lag(pop), lifeExp_diff = lifeExp - lag(lifeExp)) %>% 
+  filter(pop_diff < 0 & lifeExp_diff > 0) %>% 
+  select(-pop_diff, -lifeExp_diff) 
 ```
 
 
