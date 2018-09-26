@@ -2,9 +2,9 @@ Week 03 Pre-Class Problems
 
 We will work with the dataset called gapminder, this is a cleaned up version from Gapminder Data. Gapminder contains a lot of great data on all of the nations of the world. We first need to install the gapminder package in R.
 ``` {r}
-#install.packages("gapminder")
-#library(dplyr)
-#library(gapminder)
+install.packages("gapminder")
+library(dplyr)
+library(gapminder)
 gm = gapminder
 ```
 Pre-Class Problems
@@ -37,6 +37,7 @@ gm %>%
 
 What 5 countries have the highest total GDP over all years combined?
 ``` {r}
+#created new variable with mutate that indicates the total gdp for the year, then grouped by country and calculated the GDP cumulative total for all the years. I then arranged in descending order and sliced the top 5 countries
 gm %>%
   mutate(gdp_year_total = gdpPercap*pop) %>% 
   group_by(country) %>%
@@ -47,7 +48,7 @@ gm %>%
 ```
 What countries and years had life expectancies of at least 80 years? N.b. only output the columns of interest: country, life expectancy and year (in that order).
 ``` {r}
-#filter rows where lifeExp is greater than 80, then selecting the country, life expectancy and year columns
+#filter rows where lifeExp is greater than 80, then selected the country, life expectancy and year columns
 gm %>%
   filter(lifeExp >= 80) %>% 
   select(country, lifeExp, year) 
@@ -55,6 +56,7 @@ gm %>%
 
 What 10 countries have the strongest correlation (in either direction) between life expectancy and per capita GDP?
 ``` {r}
+#After grouping by country, I created corr, which calculates the absoluate value of the correlation accross Life expectancy and gdpPercap. I then arranged in descending order by corr and sliced the top 10 rows
 gm %>%
   group_by(country) %>% 
   summarise(corr = abs(cor(lifeExp, gdpPercap))) %>%  
@@ -63,8 +65,9 @@ gm %>%
 ```
 Which combinations of continent (besides Asia) and year have the highest average population across all countries? N.b. your output should include all results sorted by highest average population. With what you already know, this one may stump you. See this Q&A for how to ungroup before arrangeing. This also behaves differently in more recent versions of dplyr.
 ``` {r}
+#filtered asia out of the gm dataset, then grouped by both continent and year. I then summarized by the mean population according to both continent and year. Finally, I arranged by the the descending order of avg_pop
 gm %>%
-  filter(continent != "Asia") %>%
+  filter(continent != "Asia") %>%    
   group_by(continent, year) %>%
   summarise(avg_pop = mean(pop)) %>%
   arrange(desc(avg_pop))
@@ -72,14 +75,16 @@ gm %>%
 
 Which three countries have had the most consistent population estimates (i.e. lowest standard deviation) across the years of available data?
 ``` {r}
+#grouping observations by country, then calculating the Standard Deviation per country. I then arranged by the SD and sliced out the first 3 observations
 gm %>%
-  group_by(country) %>%
+  group_by(country) %>% 
   summarise(s.dev = sd(pop)) %>%
   arrange(s.dev) %>%
   slice(1:3)
 ```
 Subset gm to only include observations from 1992 and store the results as gm1992. What kind of object is this?
 ``` {r}
+#filtered just observations that are in 1992 and then checked the type and class of the new variable
 gm1992 = gm %>%
   filter(year == 1992)
 typeof(gm1992)
@@ -89,8 +94,9 @@ Which observations indicate that the population of a country has decreased from 
 ``` {r}
 gm %>%
   group_by(country) %>%
-  mutate(pop_diff = pop - lag(pop), lifeExp_diff = lifeExp - lag(lifeExp)) %>%
-  filter(pop_diff < 0 & lifeExp_diff > 0) %>%
-  select(-pop_diff, -lifeExp_diff)
+  mutate(pop_diff = pop - lag(pop), lifeExp_diff = lifeExp - lag(lifeExp)) %>% #creating two new variables that calculate the difference between the most recent population/lifeexpectancy and the one "lagging" one observation before it
+  filter(pop_diff < 0 & lifeExp_diff > 0) %>% #filtering observations where the population descreased and the life expectancy increased
+  select(-pop_diff, -lifeExp_diff) #returning the original dataset where the two new variables are not shown
 ```
+
 
