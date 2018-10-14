@@ -17,6 +17,17 @@ rep_y_x_times <- function(x, y) {
 ```
 Compare and contrast rnorm() and MASS::mvrnorm(). How could you make them more consistent?
 
+``` {r}
+# Although the functions are very similar, they have different argument names. rnorm has the argument names of n, mean, and sd, while mvrnorm has the argument names of n, mu and sigma. To make them more consistent, having the same argument values would do the trick.
+
+```
+
+
 Use lapply() and an anonymous function to find the coefficient of variation (the standard deviation divided by the mean) for all columns in the mtcars dataset.
+``` {r}
+
+
+```
+
 
 Use vapply() to: a. Compute the standard deviation of every column in a numeric data frame. b. Compute the standard deviation of every numeric column in a mixed data frame. (Hint: you’ll need to use vapply() twice.)
