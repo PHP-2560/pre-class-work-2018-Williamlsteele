@@ -1,6 +1,6 @@
 ---
 title: "Simulations Pre-Class Project"
-date: "Due March 13, 2017 at 5:00pm"
+date: "Due October 24th, 10:30 AM"
 output:
   html_document
 
@@ -34,20 +34,20 @@ With this project we will simulate a famoues probability problem. This will not 
     ``` {r}
     
 set.seed(1)
-gamblers_ruin =function(bet,bankroll,prob) {
+gamblers_ruin =function(bet,bankroll,prob) { #creating function gamblers_ruin
   count=0
-  while(bet>0) {
+  while(bet>0) { #while the bet is still positive, hence above 0
     ProbVal=runif(1)
-    if(ProbVal <= prob)
+    if(ProbVal <= prob)   
     {
-      bankroll = bet + bankroll
+      bankroll = bet + bankroll #win bet
       bet = (bet + bankroll)*0.1
-    }else{
-      bankroll = bankroll-bet
+    } else {
+      bankroll = bankroll-bet  #lose bet
       bet = bet
       }
-    count = count + 1
-    if(bankroll < bet){break}
+    count = count + 1   
+    if(bankroll < bet){break}   #if your bankroll is less than bet
   }
   
   duration = count
@@ -70,7 +70,7 @@ probability
     ```
     b. the probability that you have busted by the time you have placed your five hundredth bet by simulating the outcome directly. 
     ``` {r}
-    
+    #prob busted by the time you have placed five hundredth bet
 total=length(durations)
 lost_within_500 =length(which(durations<=500))
 probability = lost_within_500/total
@@ -80,6 +80,7 @@ probability
     ```
     c. the mean time you go bust, given that you go bust within the first 5000 hands.
     ``` {r}
+    #mean bust time for first 5000 hands
     mean_bust_time500 = mean(durations[which(durations<=5000)])
     mean_bust_time500
     
@@ -93,14 +94,14 @@ gamblers_ruin2 =function(bet,bankroll,prob) {
     ProbVal=runif(1)
     if(ProbVal <= prob)
     {
-      bankroll = bet + bankroll
+      bankroll = bet + bankroll #win bet
       bet = (bet + bankroll)*0.1
     }else{
-      bankroll = bankroll-bet
+      bankroll = bankroll-bet #lose bet
       bet = bet
       }
     count = count + 1
-    if(count ==100){break}
+    if(count ==100){break}  #setting count criteria to break after 100 hands
     if(bankroll<bet){break}
   }
   duration = count
@@ -129,14 +130,14 @@ gamblers_ruin3 = function(bet,bankroll,prob)
     ProbVal=runif(1)
     if(ProbVal <= prob)
     {
-      bankroll = bet + bankroll
+      bankroll = bet + bankroll #win bet
       bet = (bet + bankroll)*0.1
     }else{
-      bankroll = bankroll-bet
+      bankroll = bankroll-bet #lose bet
       bet = bet
       }
     count = count + 1
-    if(count ==500){break}
+    if(count ==500){break}  #break if number of hands is equal to 500
     if(bankroll< bet){break}
   }
   duration = count
@@ -161,7 +162,7 @@ Note: you *must* stop playing if your player has gone bust. How will you handle 
 2. **Markov Chains**. Suppose you have a game where the probability of winning on your first hand is 48%; each time you win, that probability goes up by one percentage point for the next game (to a maximum of 100%, where it must stay), and each time you lose, it goes back down to 48%. Assume you cannot go bust and that the size of your wager is a constant $100.
     a. Is this a fair game? Simulate one hundred thousand sequential hands to determine the size of your return. Then repeat this simulation 99 more times to get a range of values to calculate the expectation.
     ``` {r}
-markov_chains = function(bet,bankroll,prob)
+markov_chains = function(bet,bankroll,prob)  #markov chain function
 {
   count = 0
   original_prob = prob
@@ -169,14 +170,14 @@ markov_chains = function(bet,bankroll,prob)
     ProbVal=runif(1)
     if(ProbVal <= prob)
     {
-      bankroll = bankroll + bet
+      bankroll = bankroll + bet #win bet
       prob = prob + 0.01
     }else{
-      bankroll = bankroll - bet
+      bankroll = bankroll - bet #lose bet
      prob = original_prob
     }
     count = count+1
-    if(count==100000){break}
+    if(count==100000){break} #if hands are equal to 100000, break
     if(bankroll < bet){break}
   }
   return(bankroll)
